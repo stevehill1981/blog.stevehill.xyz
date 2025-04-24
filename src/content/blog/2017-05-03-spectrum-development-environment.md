@@ -183,7 +183,7 @@ you should also be able to load the TAP file there, but I don't have that at the
 moment). Loading the TAP file should automatically execute your program, and
 give you a black screen. Amazing, isn't it?
 
-![black screen](/assets/images/all-black.png)
+![black screen](../../assets/images/all-black.png)
 
 .... applause ....
 
@@ -201,7 +201,7 @@ confirm that).
 The colour we chose earlier was black, with white ink and bright mode set,
 adding up to a total of 71. This is made up as follows:
 
-```z80
+```asm
 INK (0-7) + PAPER (0-7 * 8) + BRIGHT (0/64)
 ```
 
@@ -218,7 +218,7 @@ The colours are:
 
 So, if we wanted to make the screen cyan with bright yellow ink, we'd go for:
 
-```z80
+```asm
 INK (6) + PAPER (5 * 8 = 40) + BRIGHT (64) = 110
 ```
 
@@ -243,7 +243,7 @@ end 40000
 Compile that, and load it back into the emulator. You'll end up with the screen
 being cyan in the middle, and with a black border.
 
-![cyan screen](/assets/images/cyan-centre.png)
+![cyan screen](../../assets/images/cyan-centre.png)
 
 That's not quite right. I wanted the entire screen to be cyan, not just the
 middle bit. So what did we do wrong? The secret is in the third line:
@@ -262,7 +262,7 @@ ld a,5           ; Set the colour to cyan (5).
 
 That's better. Now you should have this:
 
-![cyan all over](/assets/images/cyan-all-over.png)
+![cyan all over](../../assets/images/cyan-all-over.png)
 
 That's still not quite what we want though. Unfortunately, unless I'm missing
 something obvious, you can't set the border colour to be a bright shade. Only
@@ -290,7 +290,7 @@ end 40000
 
 And the result:
 
-![perfect cyan](/assets/images/cyan-perfect.png)
+![perfect cyan](../../assets/images/cyan-perfect.png)
 
 Yes, that's what we wanted.
 

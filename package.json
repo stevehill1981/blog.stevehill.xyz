@@ -1,0 +1,19 @@
+{
+  "name": "stevehill.xyz",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "astro": "^5.7.12",
+    "simple-icons": "^14.12.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}

@@ -1,0 +1,103 @@
+---
+import { getCollection, getEntryBySlug } from 'astro:content';
+import SiteHeader from '../components/SiteHeader.astro';
+import { Astro } from 'astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug('blog', slug);
+const rendered = post ? await post.render() : null;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+    <title>{post ? `${post.data.title} – Steve Hill` : '404 – Not Found'}</title>
+    <style>
+      body {
+        font-family: 'Lato', system-ui, sans-serif;
+        background: linear-gradient(135deg, #e0e7ef 0%, #c9d6ff 50%, #e2e2e2 100%);
+        color: #222;
+        margin: 0;
+        min-height: 100vh;
+      }
+      .post-container {
+        max-width: 700px;
+        margin: 3rem auto 2rem auto;
+        padding: 0 1.2rem 3rem 1.2rem;
+      }
+      .post-title {
+        font-size: 2.2rem;
+        font-family: 'Montserrat', system-ui, sans-serif;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        color: #1a237e;
+      }
+      .post-meta {
+        font-size: 1.05rem;
+        color: #888;
+        margin-bottom: 1.2rem;
+      }
+      .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 0.7rem 0 1.5rem 0;
+        padding: 0;
+        list-style: none;
+      }
+      .post-tag {
+        background: #e3e8f0;
+        color: #1a237e;
+        font-size: 0.92rem;
+        padding: 0.18em 0.85em;
+        border-radius: 999px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        display: inline-block;
+      }
+      .post-content {
+        font-size: 1.13rem;
+        line-height: 1.7;
+        color: #222;
+        margin-top: 2.2rem;
+      }
+      @media (max-width: 800px) {
+        .post-container {
+          padding: 0 0.5rem 2rem 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <SiteHeader active="blog" />
+    {post ? (
+      <main class="post-container">
+        <h1 class="post-title">{post.data.title}</h1>
+        <div class="post-meta">{new Date(post.data.pubDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+        {post.data.tags && post.data.tags.length > 0 && (
+          <ul class="post-tags">
+            {post.data.tags.map(tag => (
+              <li class="post-tag" key={tag}>{tag}</li>
+            ))}
+          </ul>
+        )}
+        <article class="post-content">
+          {rendered ? <rendered.Content /> : null}
+        </article>
+      </main>
+    ) : (
+      <main class="post-container">
+        <h1>404 – Post Not Found</h1>
+        <p>Sorry, this blog post does not exist.</p>
+      </main>
+    )}
+  </body>
+</html> 
